@@ -13,11 +13,11 @@ x();*/
 /* if they ask u to use the var and print the numbers. */
 
 function x(){
-    for (var i=1;i<=5;i++){
+    for (var i=1;i<=10;i++){
         function close(x){
             setTimeout(function(){
                 console.log(x);
-            },x * 1000)
+            },x * 100)
         }
         close(i);
     }
