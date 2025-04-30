@@ -1,3 +1,5 @@
+// Simple Calculator
+
 function calculator(a,b,operation){
      a = parseFloat(prompt("enter the number:"));
      b = parseFloat(prompt("Enter the number"));
