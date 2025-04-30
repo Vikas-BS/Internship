@@ -19,7 +19,7 @@ console.log("Start");
 setTimeout(function cbT() {  // callback queue
   console.log("CB Timeout");
 }, 5000);
-fetch("https://api.netflix.com").then(function cbF() {  //Microtask queue (it has the 1st priority when compared to call satck.)
+fetch("https://api.github.com/users/alok722").then(function cbF() {  //Microtask queue (it has the 1st priority when compared to call satck.)
     console.log("CB Netflix");
 }); 
 console.log("End");
