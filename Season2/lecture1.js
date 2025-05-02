@@ -1,3 +1,5 @@
+// Promise is an object represent the eventual completion or failure of an asynchronous operation.
+
 const checkeven =new Promise((resolve,reject) => {
     let num =2;
     if(num % 2 === 0) resolve("the num is even");
