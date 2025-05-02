@@ -3,9 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>To Do List</title>
 </head>
-<body>
+
+    <style>
+        body{
+            font-family: Arial, Helvetica, sans-serif;
+            padding: 10px;
+        }
+        input [type="text"]{
+            padding: 5px;
+            width: 20px;
+        }
+        button{
+            margin-left: 5px;
+        }
+        .done{
+            text-decoration: line-through;
+            color: green;
+        }
+        li{
+            margin: 10px;
+        }
+
+
+    </style>
+    <body>
+        <h1>To do List</h1>
+    <input type="text" id="Taskinput" placeholder="Enter the task">
+    <button onclick="addtask()">Add</button>
+    <ul id="tasklist"></ul>
     <script src="building knowledge.js"> </script>
-</body>
+    </body>
+    
+
 </html>
