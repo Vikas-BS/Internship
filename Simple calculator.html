@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator</title>
+
+    <style>
+        body{
+            font-family: Arial, Helvetica, sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: black;
+            margin: 2px;
+            
+        }
+        .calculator{
+            width: 250px;
+            background-color: gray;
+            border-radius: 20px;
+            padding: 20px;
+            padding-left: 8px;
+        }
+        .display{
+            width: 96%;
+            height: 50px;
+            text-align: right;
+            font-size: medium;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: none;
+            background-color: white;
+            border-radius: 9px;
+            color: #333;
+        }
+        .buttons{
+            display: grid;
+            grid-template-columns: repeat(4,1fr);
+            gap: 10px;
+        }
+        .button{
+            background-color: beige;
+            border: none;
+            font-size: medium;
+            padding: 20px;
+            cursor:pointer;
+            border-radius: 10px;
+            transition: background-color .3s, transform .2s;
+            color: rgb(243, 140, 6); 
+
+        }
+        .button:hover{
+            background-color: black;
+            transform: scale(1.1);
+        }
+        .button:active{
+            transform: scale(1);
+        }
+        .button.clear {
+                background-color: #ff5722;
+            }
+
+            .button.clear:hover {
+                background-color: #e64a19;
+            }
+
+            .button.equal {
+                background-color: #eef0ec;
+            }
+
+            .button.equal:hover {
+                background-color: #689f38;
+            }
+
+           
+
+    </style>
+</head>
+<body>
+        <div class="calculator">
+            <input type="text" id="display" class="display" >
+            <div class="buttons">
+                <button class="clear button" onclick="clearDisplay()">C</button>
+                <button class="operation button" onclick="appendOperation('/')">/</button>
+                <button class="operation button" onclick="appendOperation('*')">*</button>
+                <button class="operation button" onclick="appendOperation('-')">-</button>
+
+                <button class="button" onclick="appendNumber('7')">7</button>
+                <button class="button" onclick="appendNumber('8')">8</button>
+                <button class="button" onclick="appendNumber('9')">9</button>
+                <button class="operation button" onclick="appendOperation('+')">+</button>
+
+                <button class="button" onclick="appendNumber('4')">4</button>
+                <button class="button" onclick="appendNumber('5')">5</button>
+                <button class="button" onclick="appendNumber('6')">6</button>
+                <button class="equal button" onclick="calculate()">=</button>
+
+                <button class="button" onclick="appendNumber('1')">1</button>
+                <button class="button" onclick="appendNumber('2')">2</button>
+                <button class="button" onclick="appendNumber('3')">3</button>
+                <button class="erase button" onclick="erase()">⌫</button>
+
+                <button class="button" onclick="appendNumber('.')">.</button>
+                <button class="button" onclick="appendNumber('0')">0</button>
+                <button class="button" onclick="appendNumber('00')">00</button>
+                
+
+
+            </div>
+            </div>
+    <script src="Simple calculator.js"></script>     
+</body>
+</html>

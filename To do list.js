@@ -1,41 +1,3 @@
-// Simple Calculator
-
-// function calculator(a,b,operation){
-//      a = parseFloat(prompt("enter the number:"));
-//      b = parseFloat(prompt("Enter the number"));
-//      operation= prompt("Enter the operation need to be done : +,-,*,/,");
-
-//     let result;
-
-//     switch(operation){
-
-//         case "+":
-//             result = a+b;
-//             break;
-//         case "-":
-//             result =a-b;
-//             break;    
-//         case "/":
-//             result =a/b;
-//             break;
-//         case "*":
-//             result =a*b;
-//             break;  
-            
-//         default:
-//             result ="Invalid operation"      
-//     }
-
-//     alert(`Result: ${result}`);
-// }    
-
-// calculator();
-
-
-
-// To DO List
-
-
 function addtask(){
     const input= document.getElementById("Taskinput");
     const taskText =input.value.trim();
@@ -63,16 +25,16 @@ function addtask(){
         }
     }
 
-    const deletebutto=document.createElement("button");
-    deletebutto.textContent="Delete";
-    deletebutto.onclick = () =>{
+    const deletebutton=document.createElement("button");
+    deletebutton.textContent="Delete";
+    deletebutton.onclick = () =>{
         li.remove();
     }
 
     li.appendChild(span);
     li.appendChild(donebutton);
     li.appendChild(editbutton);
-    li.appendChild(deletebutto);
+    li.appendChild(deletebutton);
 
     document.getElementById("tasklist").appendChild(li);
     input.value=" ";
