@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz</title>
+    <style>
+        body{
+            font-family: 'Times New Roman', Times, serif;
+            padding: 30px;
+            text-align: center;
+        }
+        .question{
+            font-size: 20px;
+            margin-bottom: 20px;
+        }
+        .options button{
+            width:150px;
+            display:list-item;
+            margin: 10px auto;
+            padding: 10px 20px;
+            font-size: 15px;
+
+        }
+        #feedback{
+            font-family: 20px;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="question" id="question"></div>
+    <div class="options" id="options"></div>
+    <div id="feedback"></div>
+    <div id="score" style="font-size: 20px; margin-top: 20px;"></div>  
+    <script src="Quiz.js"></script> 
+</body>
+</html>
