@@ -23,6 +23,12 @@ button{
     font-size: 15px;
     cursor: pointer;
 }
+#image-count{
+    background-color: rgb(233, 232, 232);
+    padding: 10px 15px;
+    font-size: 15px;
+    cursor: pointer;
+}
 
 
 #imgGrid {
