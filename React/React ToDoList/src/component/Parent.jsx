@@ -1,14 +1,29 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ThemeToggle from './ThemeToggle';
+import ToDo from './ToDo';
 
-const Parent = ({ user, setUser,tasks }) => {
+const Parent = ({ user, setUser }) => {
   const [search, setSearch] = useState('');
+  const [tasks, setTasks] = useState(() => {
+  try {
+    const data = localStorage.getItem(user.email + '_tasks');
+    return data ? JSON.parse(data) : [];
+  } catch (err) {
+    console.error('Failed to parse tasks from localStorage:', err);
+    return [];
+  }
+});
+
   const searchRef = useRef(null);
   const [filteredTasks, setFilteredTasks] = useState([]);
   const [showProfile, setShowProfile] = useState(false);
   const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light');
   const navigate = useNavigate();
+
+  useEffect(() =>{
+    localStorage.setItem(user.email + '_tasks' , JSON.stringify(tasks))
+  },[tasks,user.email])
   
 
   useEffect(() => {
@@ -95,7 +110,7 @@ const Parent = ({ user, setUser,tasks }) => {
       </div>
 
       <div className="flex-grow flex flex-col items-center px-4 py-6">
-        {showProfile && (
+        {showProfile ? (
           <div className="w-full max-w-xl bg-white dark:bg-gray-900 p-6 rounded-lg shadow-xl">
             <h2 className="text-2xl font-bold text-gray-800 dark:text-white mb-4">
               User Profile
@@ -111,6 +126,8 @@ const Parent = ({ user, setUser,tasks }) => {
               Back to Tasks
             </button>
           </div>
+        ):(
+          <ToDo user={user} setUser={setUser} tasks={tasks} setTasks={setTasks} />
         )}
       </div>
     </div>

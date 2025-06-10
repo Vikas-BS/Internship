@@ -1,18 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
-import Parent from './Parent';
 
-const ToDo = ({ user, setUser}) => {
-  const [tasks, setTasks] = useState(() => JSON.parse(localStorage.getItem(user.email + '_tasks')) || []);
+
+const ToDo = ({tasks , setTasks}) => {
   const [input, setInput] = useState('');
   const [editIndex, setEditIndex] = useState(null);
   const navigate = useNavigate();
-
-  useEffect(() => {
-    localStorage.setItem(user.email + '_tasks', JSON.stringify(tasks));
-  }, [tasks, user.email]);
-
   const addOrEditTask = () => {
     if (input.trim() === '') {
       toast.error('Please enter the task');
@@ -51,12 +45,7 @@ const ToDo = ({ user, setUser}) => {
   };
 
   return (
-    <div className="min-h-screen bg-neutral-300 bg-cover bg-no-repeat bg-center dark:bg-slate-500 dark:text-white">
-      
-      
-      <Parent user={user} setUser={setUser} tasks={tasks} />
-
-      
+    <div className="min-h-screen w-screen bg-neutral-300 bg-cover bg-no-repeat bg-center dark:bg-slate-500 dark:text-white">
       <div className="flex justify-center px-4 py-6">
         <div className="w-full max-w-xl bg-white dark:bg-gray-900 bg-opacity-10 dark:bg-opacity-80 p-6 rounded-lg shadow-xl">
           
