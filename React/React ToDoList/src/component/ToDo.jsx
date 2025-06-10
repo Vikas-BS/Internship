@@ -1,21 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import toast from 'react-hot-toast';
-import bg from '../assets/bg.jpg';
+import { useNavigate } from 'react-router-dom';
+import Parent from './Parent';
 
-const ToDo = ({ user, setUser }) => {
+const ToDo = ({ user, setUser}) => {
   const [tasks, setTasks] = useState(() => JSON.parse(localStorage.getItem(user.email + '_tasks')) || []);
   const [input, setInput] = useState('');
   const [editIndex, setEditIndex] = useState(null);
-  const [showProfile, setShowProfile] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     localStorage.setItem(user.email + '_tasks', JSON.stringify(tasks));
   }, [tasks, user.email]);
 
   const addOrEditTask = () => {
-    if (input.trim() === '') return;
-
-    if (editIndex !== null) {
+    if (input.trim() === '') {
+      toast.error('Please enter the task');
+    } else if (editIndex !== null) {
       const updatedTasks = [...tasks];
       updatedTasks[editIndex].text = input;
       setTasks(updatedTasks);
@@ -25,7 +26,6 @@ const ToDo = ({ user, setUser }) => {
       setTasks([...tasks, { text: input, done: false }]);
       toast.success('Task added');
     }
-
     setInput('');
   };
 
@@ -35,14 +35,14 @@ const ToDo = ({ user, setUser }) => {
     setTasks(newTasks);
   };
 
+  const handleTaskClick = (task, index) => {
+    localStorage.setItem('selected_task', JSON.stringify(task));
+    navigate(`/task/${index}`);
+  };
+
   const deleteTask = index => {
     const newTasks = tasks.filter((_, i) => i !== index);
     setTasks(newTasks);
-  };
-
-  const logout = () => {
-    setUser(null);
-    toast.success('Logged out');
   };
 
   const editTask = index => {
@@ -51,74 +51,59 @@ const ToDo = ({ user, setUser }) => {
   };
 
   return (
-    <div
-      className="min-h-screen w-screen  bg-cover bg-no-repeat bg-center   flex flex-col"
-      style={{ backgroundImage: `url(${bg})` }}
-    >
+    <div className="min-h-screen bg-neutral-300 bg-cover bg-no-repeat bg-center dark:bg-slate-500 dark:text-white">
       
-      <div className="bg-white bg-opacity-80 shadow-md p-4 flex justify-between items-center">
-        <h1 className="text-xl font-bold text-blue-700">Todo App</h1>
-        <div className="space-x-4">
-          <button onClick={() => setShowProfile(true)} className="text-blue-600 font-semibold hover:underline">
-            Profile
-          </button>
-          <button onClick={logout} className="text-red-500 font-semibold hover:underline">
-            Logout
-          </button>
-        </div>
-      </div>
+      
+      <Parent user={user} setUser={setUser} tasks={tasks} />
 
-    
-      <div className="flex-grow flex justify-center items-center px-4">
-        <div className="w-full max-w-xl bg-white bg-opacity-0 p-6 rounded-lg shadow-lg">
-          {showProfile ? (
-            <div>
-              <h2 className="text-2xl font-bold text-gray-800 mb-4">User Profile</h2>
-              
-              <p className="text-black"><strong className="text-black">Email:</strong> {user.email}</p>
-              <p className="mt-4">
-                <button
-                  onClick={() => setShowProfile(false)}
-                  className="text-blue-500 hover:underline mt-2"
-                >
-                  Back to Tasks
-                </button>
-              </p>
-            </div>
-          ) : (
-            <>
-              <div className="flex mb-4">
-                <input
-                  className="flex-grow p-2 border rounded-l"
-                  placeholder="Enter a task"
-                  value={input}
-                  onChange={e => setInput(e.target.value)}
-                />
-                <button className="bg-blue-500 text-white px-4 rounded-r" onClick={addOrEditTask}>
-                  {editIndex !== null ? 'Update' : 'Add'}
-                </button>
-              </div>
-              <ul>
-                {tasks.map((task, index) => (
-                  <li key={index} className=" flex justify-between items-center p-2 border-b">
-                    <div className="font-bold text-2xl text-black flex items-center space-x-2 ">
-                      <input type="checkbox" checked={task.done} onChange={() => toggleTask(index)} />
-                      <span
-                        className={`cursor-pointer ${task.done ? 'line-through text-gray-400' : ''}`}
-                        onClick={() => toggleTask(index)}
-                      >
-                        {task.text}
-                      </span>
-                    </div>
-                    <div className="space-x-2">
-                      <button className="text-yellow-500" onClick={() => editTask(index)}>Edit</button>
-                      <button className="text-red-500" onClick={() => deleteTask(index)}>Delete</button>
-                    </div>
-                  </li>
-                ))}
-              </ul>
-            </>
-          )}
+      
+      <div className="flex justify-center px-4 py-6">
+        <div className="w-full max-w-xl bg-white dark:bg-gray-900 bg-opacity-10 dark:bg-opacity-80 p-6 rounded-lg shadow-xl">
+          
+         
+          <div className="flex mb-4">
+            <input
+              className="flex-grow p-2 border rounded-l text-white dark:bg-gray-800 dark:text-white dark:border-gray-600"
+              placeholder="Enter a task"
+              value={input}
+              onChange={e => setInput(e.target.value)}
+            />
+            <button
+              className="bg-blue-500 hover:bg-blue-600 text-white px-4 rounded-r"
+              onClick={addOrEditTask}
+            >
+              {editIndex !== null ? 'Update' : 'Add'}
+            </button>
+          </div>
+
+          
+          <ul>
+            {tasks.map((task, index) => (
+              <li
+                key={index}
+                className="flex justify-between items-center p-2 border-b dark:border-gray-600"
+              >
+                <div className="font-bold text-2xl text-black dark:text-white flex items-center space-x-2">
+                  <input
+                    type="checkbox"
+                    checked={task.done}
+                    onChange={() => toggleTask(index)}
+                  />
+                  <span
+                    className={`cursor-pointer ${task.done ? 'line-through decoration-red-700' : ''}`}
+                    onClick={() => handleTaskClick(task, index)}
+                  >
+                    {task.text}
+                  </span>
+                </div>
+                <div className="space-x-2">
+                  <button className="text-yellow-500 dark:text-yellow-400" onClick={() => editTask(index)}>Edit</button>
+                  <button className="text-red-500 dark:text-red-400" onClick={() => deleteTask(index)}>Delete</button>
+                </div>
+              </li>
+            ))}
+          </ul>
+          
         </div>
       </div>
     </div>

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 
-const Register = () => {
+const Register = ({setUser}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
@@ -16,11 +16,12 @@ const Register = () => {
     users.push({ email, password });
     localStorage.setItem('users', JSON.stringify(users));
     toast.success('Registered successfully');
-    navigate('/login');
+    setUser({email});
+    navigate('/');
   };
 
   return (
-    <div className="min-h-screen w-screen flex items-center justify-center bg-gradient-to-br from-green-500 to-teal-600 text-white">
+    <div className="min-h-screen w-screen flex items-center justify-center bg-gradient-to-br from-green-300 to-teal-500 text-white">
       <div className="bg-white text-black p-8 rounded-xl shadow-2xl w-full max-w-md">
         <h2 className="text-3xl font-bold mb-6 text-center text-teal-600">Create Account</h2>
         <input
