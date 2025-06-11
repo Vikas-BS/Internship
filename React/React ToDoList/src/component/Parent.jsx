@@ -1,69 +1,62 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
-import ThemeToggle from './ThemeToggle';
-import ToDo from './ToDo';
+import React, { useState, useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
+import ThemeToggle from "./ThemeToggle";
+import ToDo from "./ToDo";
 
 const Parent = ({ user, setUser }) => {
-  const [search, setSearch] = useState('');
-  const [tasks, setTasks] = useState(() => {
-  try {
-    const data = localStorage.getItem(user.email + '_tasks');
-    return data ? JSON.parse(data) : [];
-  } catch (err) {
-    console.error('Failed to parse tasks from localStorage:', err);
-    return [];
-  }
-});
-
-  const searchRef = useRef(null);
+  const [search, setSearch] = useState("");
+  const [tasksFromChild, setTasksFromChild] = useState([]);
   const [filteredTasks, setFilteredTasks] = useState([]);
   const [showProfile, setShowProfile] = useState(false);
-  const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light');
+  const [theme, setTheme] = useState(localStorage.getItem("theme") || "light");
+  const searchRef = useRef(null);
   const navigate = useNavigate();
 
-  useEffect(() =>{
-    localStorage.setItem(user.email + '_tasks' , JSON.stringify(tasks))
-  },[tasks,user.email])
-  
+  const handleTasksChange = (tasks) => {
+    setTasksFromChild(tasks);
+  };
 
   useEffect(() => {
     setFilteredTasks(
-      tasks.filter(task =>
+      tasksFromChild.filter((task) =>
         task.text.toLowerCase().includes(search.toLowerCase())
       )
     );
-  }, [search, tasks]);
+  }, [search, tasksFromChild]);
 
   useEffect(() => {
-    document.documentElement.classList.toggle('dark', theme === 'dark');
+    document.documentElement.classList.toggle("dark", theme === "dark");
   }, [theme]);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (searchRef.current && !searchRef.current.contains(event.target)) {
-        setSearch('');
+        setSearch("");
       }
     };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  const handleSelectTask = (task, index) => {
-    localStorage.setItem('selected_task', JSON.stringify(task));
-    setSearch('');
-    navigate(`/task/${index}`);
+  const handleSelectTask = (task) => {
+    const originalIndex = tasksFromChild.findIndex(
+      (t) => t.text === task.text && t.done === task.done
+    );
+
+    if (originalIndex !== -1) {
+      localStorage.setItem("selected_task", JSON.stringify(task));
+      setSearch("");
+      navigate(`/task/${originalIndex}`);
+    }
   };
 
   const handleLogout = () => {
     setUser(null);
-    navigate('/');
+    navigate("/");
   };
 
- 
   return (
-    <div className=" w-screen">
+    <div className="w-screen">
       <div className="bg-white dark:bg-gray-800 px-6 py-4 shadow-md flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <h1 className="text-xl font-bold text-blue-700 dark:text-white">
           Todo App
@@ -79,11 +72,11 @@ const Parent = ({ user, setUser }) => {
           />
           {search && filteredTasks.length > 0 && (
             <ul className="absolute left-0 w-full bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-600 mt-1 rounded shadow-lg max-h-40 overflow-auto z-50">
-              {filteredTasks.map((task, index) => (
+              {filteredTasks.map((task) => (
                 <li
-                  key={index}
+                  key={task.text}
                   className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer text-black dark:text-white"
-                  onClick={() => handleSelectTask(task, index)}
+                  onClick={() => handleSelectTask(task)}
                 >
                   {task.text}
                 </li>
@@ -118,7 +111,6 @@ const Parent = ({ user, setUser }) => {
             <p className="text-black dark:text-white text-lg">
               <strong>Email:</strong> {user.email}
             </p>
-            
             <button
               onClick={() => setShowProfile(false)}
               className="text-blue-500 dark:text-blue-300 hover:underline mt-4"
@@ -126,8 +118,12 @@ const Parent = ({ user, setUser }) => {
               Back to Tasks
             </button>
           </div>
-        ):(
-          <ToDo user={user} setUser={setUser} tasks={tasks} setTasks={setTasks} />
+        ) : (
+          <ToDo
+            user={user}
+            onTasksChange={handleTasksChange}
+            
+          />
         )}
       </div>
     </div>
