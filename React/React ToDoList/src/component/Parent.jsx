@@ -102,22 +102,24 @@ const Parent = ({ user, setUser }) => {
         </div>
       </div>
 
-      <div className="flex-grow flex flex-col items-center px-4 py-6">
-        {showProfile ? (
-          <div className="w-full max-w-xl bg-white dark:bg-gray-900 p-6 rounded-lg shadow-xl">
-            <h2 className="text-2xl font-bold text-gray-800 dark:text-white mb-4">
-              User Profile
-            </h2>
-            <p className="text-black dark:text-white text-lg">
-              <strong>Email:</strong> {user.email}
-            </p>
-            <button
-              onClick={() => setShowProfile(false)}
-              className="text-blue-500 dark:text-blue-300 hover:underline mt-4"
-            >
-              Back to Tasks
-            </button>
-          </div>
+      <div className="flex-grow flex flex-col items-center">
+          {showProfile ? (
+            <div className="min-h-screen w-screen flex items-center justify-center px-4 bg-neutral-300 dark:bg-slate-500">
+              <div className="w-full max-w-xl bg-white dark:bg-gray-900 p-6 rounded-lg shadow-xl">
+                <h2 className="text-2xl font-bold text-gray-800 dark:text-white mb-4">
+                  User Profile
+                </h2>
+                <p className="text-black dark:text-white text-lg">
+                  <strong>Email:</strong> {user.email}
+                </p>
+                <button
+                  onClick={() => setShowProfile(false)}
+                  className="text-blue-500 dark:text-blue-300 hover:underline mt-4"
+                >
+                  Back to Tasks
+                </button>
+              </div>
+            </div>
         ) : (
           <ToDo
             user={user}
