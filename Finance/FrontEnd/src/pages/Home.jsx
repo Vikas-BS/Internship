@@ -4,15 +4,8 @@ import DashboardCards from "../components/Dashboardcards";
 
 const Home = () =>{
     const [user , setUser] = useState(null);
-    const [incomeTotal, setIncomeTotal] = useState(0);
-    const [expenseTotal, setExpenseTotal] = useState(0);
 
     const [balance, setBalance] = useState(0);
-
-    const handleIncomeUpdate = (newTotal) => {
-      setIncomeTotal(newTotal);
-      setBalance(newTotal - expenseTotal);
-    };
     const fetchUser = async() =>{
         const token = localStorage.getItem('token');
         const res = await fetch('http://localhost:4000/api/home', {
@@ -38,16 +31,10 @@ const Home = () =>{
 
 
     return (
-    <div className="min-h-screen w-screen flex items-center justify-center bg-green-100">
+    <div className="min-h-screen w-screen flex items-center justify-center">
       {user ? (
-        <div className="text-center">
-          <h1 className="text-3xl font-bold text-black">Welcome</h1>
-          <DashboardCards
-          balance={balance} 
-          income={incomeTotal} 
-          expense={expenseTotal} 
-          onIncomeChange={handleIncomeUpdate}
-          />
+        <div className="text-center min-h-screen w-screen bg-slate-100">
+          <DashboardCards/>
 
         </div>
       ) : (

@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-const expenseSchem = new mongoose.Schema({
+const expenseSchema = new mongoose.Schema({
   user:{
     type : mongoose.Schema.Types.ObjectId, // It’s a special type in Mongoose used to reference another document in a different collection — like a foreign key in SQL.
     ref : 'User',
@@ -15,7 +15,6 @@ const expenseSchem = new mongoose.Schema({
   amount:{
     type:Number,
     required:true,
-    min: 100
   },
   category:{
     type:String,
@@ -30,4 +29,4 @@ const expenseSchem = new mongoose.Schema({
 
 },{timestamps:true});
 
-export default mongoose.model('Expense',expenseSchem);
+export default mongoose.model('Expense',expenseSchema);

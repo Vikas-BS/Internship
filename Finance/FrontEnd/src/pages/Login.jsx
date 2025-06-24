@@ -2,7 +2,7 @@ import React from 'react';
 import AuthForm from '../components/AuthForm';
 import { useNavigate } from 'react-router-dom';
 
-const Login = () => {
+const Login = (setUserName) => {
   const navigate = useNavigate();
 
   const handleLogin = async (data) => {
@@ -16,6 +16,9 @@ const Login = () => {
       const result = await res.json();
       if (res.ok) {
         localStorage.setItem('token', result.token);
+        if (data.user && data.user.name) {
+          setUserName(data.user.name); 
+        }
         navigate('/home');
       } else {
         alert(result.message || 'Login failed');
