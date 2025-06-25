@@ -1,8 +1,9 @@
 import React from 'react';
 import AuthForm from '../components/AuthForm';
 import { useNavigate } from 'react-router-dom';
+import { toast } from "react-toastify";
 
-const Signup = () => {
+const Signup = ({ setUserName }) => {
   const navigate = useNavigate();
 
   const handleSignup = async (data) => {
@@ -14,10 +15,20 @@ const Signup = () => {
       });
 
       const result = await res.json();
+
       if (res.ok) {
-        console.log('Signup success:', result);
+        toast.success('Signup success 🎉');
+
+        if (result.token) {
+          localStorage.setItem('token', result.token);
+        }
+
+        if (setUserName && result.user?.name) {
+          setUserName(result.user.name);
+        }
+        navigate('/home');
       } else {
-        alert(result.message || 'Signup failed');
+        toast.error('Signup failed');
       }
     } catch (err) {
       console.error(err);
@@ -30,7 +41,8 @@ const Signup = () => {
       <div className="w-full max-w-md sm:max-w-lg md:max-w-xl lg:max-w-2xl p-6 sm:p-8 space-y-6 bg-white rounded-lg shadow-md transition-all duration-300">
         <AuthForm type="signup" onSubmit={handleSignup} />
         <p className="text-sm text-center text-gray-600">
-          Already have an account? <a href="/login" className="text-indigo-600 hover:underline">Login</a>
+          Already have an account?{' '}
+          <a href="/login" className="text-indigo-600 hover:underline">Login</a>
         </p>
       </div>
     </div>

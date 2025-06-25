@@ -7,12 +7,11 @@ const Home = () =>{
 
     const [balance, setBalance] = useState(0);
     const fetchUser = async() =>{
-        const token = localStorage.getItem('token');
-        const res = await fetch('http://localhost:4000/api/home', {
-            headers:{
-                Authorization: `Bearer ${token}`
-            }
-
+        const token = localStorage.getItem("token");
+        const res = await fetch("http://localhost:4000/api/home", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         });
         const data = await res.json();
         if(res.ok){
