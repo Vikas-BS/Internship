@@ -86,7 +86,7 @@ const ExpenseCard = ({ onTotalChange }) => {
 
   return (
     <>
-      <div className="bg-white max-w-sm w-full text-black rounded-2xl p-6 shadow-2xl border border-gray-200 transform transition-transform duration-300 hover:-translate-y-1 hover:scale-105">
+      <div className="bg-white max-w-sm w-full text-black rounded-xl p-6  border border-gray-200 transform transition-transform duration-300 hover:-translate-y-1 hover:scale-105">
         <div className="flex justify-between items-start">
           <h3 className="text-md text-gray-700 font-medium">Expenses</h3>
           <button

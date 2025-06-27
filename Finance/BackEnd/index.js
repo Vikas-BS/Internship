@@ -6,6 +6,7 @@ import expenseRoutes from './routes/exp.js'
 import homeRoutes from './routes/home.js'
 import cors from 'cors';
 import mongoose from 'mongoose';
+import userRoutes from './routes/user.js'
 dotenv.config();
 
 const app = express();
@@ -16,6 +17,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/income', incomeRoutes);
 app.use('/api/expense', expenseRoutes);
 app.use('/api/home',homeRoutes);
+app.use('/api/user',userRoutes);
 
 
 

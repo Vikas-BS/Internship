@@ -30,9 +30,9 @@ const Home = () =>{
 
 
     return (
-    <div className="min-h-screen w-screen flex items-center justify-center">
+    <div className="min-h-screen w-screen flex items-center justify-center bg-gradient-to-br from-gray-100 to-white">
       {user ? (
-        <div className="text-center min-h-screen w-screen bg-slate-100">
+        <div className="text-center min-h-screen w-screen bg-gradient-to-br from-gray-100 to-white">
           <DashboardCards/>
 
         </div>

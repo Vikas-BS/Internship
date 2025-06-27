@@ -64,16 +64,28 @@ const Navbar = () => {
         <div className="flex items-center gap-4">
           <button
             onClick={() => setSidebarOpen(true)}
-            className= "bg-blue-400 hover:bg-blue-700 p-2 rounded-md transition"
+            className="bg-blue-400 hover:bg-blue-700 p-2 rounded-md transition"
             title="Open menu"
           >
-            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="white">
-              <path d="M3 6h18M3 12h18M3 18h18" stroke="white" strokeWidth="2" strokeLinecap="round" />
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="22"
+              height="22"
+              viewBox="0 0 24 24"
+              fill="white"
+            >
+              <path
+                d="M3 6h18M3 12h18M3 18h18"
+                stroke="white"
+                strokeWidth="2"
+                strokeLinecap="round"
+              />
             </svg>
           </button>
-          <h1 className="text-xl font-bold tracking-wide">Hi, Welcome back {userName|| "User"} 👋🏻</h1>
+          <h1 className="text-xl font-bold tracking-wide">
+            Hi, Welcome back {userName || "User"} 👋🏻
+          </h1>
         </div>
-
 
         <div className="relative" ref={dropdownRef}>
           <button
@@ -99,7 +111,14 @@ const Navbar = () => {
 
           {open && (
             <ul className="absolute right-0 mt-2 w-44 bg-white border rounded-xl shadow-xl z-50 py-2 text-sm text-gray-700 animate-fadeIn">
-              <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">Profile</li>
+              <li
+                className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                onClick={() => {
+                  navigate("/profile");
+                }}
+              >
+                Profile
+              </li>
               <li
                 className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
                 onClick={handleLogout}

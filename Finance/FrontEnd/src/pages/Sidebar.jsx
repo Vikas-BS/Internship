@@ -1,6 +1,13 @@
-import React from 'react';
+import { useNavigate } from 'react-router-dom';
+
 
 const Sidebar = ({ isOpen, onClose }) => {
+  const navigate = useNavigate();
+
+  const handleNavigation = (path) => {
+    navigate(path);
+    onClose(); 
+  };
   return (
     <>
       {isOpen && (
@@ -18,9 +25,9 @@ const Sidebar = ({ isOpen, onClose }) => {
           <h2 className="text-xl font-bold text-black">Menu</h2>
         </div>
         <ul className="p-4 space-y-4 text-gray-700">
-          <li className="hover:text-blue-500 cursor-pointer">Home</li>
-          <li className="hover:text-blue-500 cursor-pointer">Profile</li>
-          <li className="hover:text-blue-500 cursor-pointer">Settings</li>
+          <li className="hover:text-blue-500 cursor-pointer"
+          onClick={() => handleNavigation("/home")}
+          >Home</li>
         </ul>
       </div>
     </>

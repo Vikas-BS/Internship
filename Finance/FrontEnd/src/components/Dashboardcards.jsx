@@ -9,7 +9,7 @@ const DashboardCards = () => {
   const balance = totalIncome - totalExpense;
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 p-6 bg-slate-100">
+    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 p-6 ">
       <BalanceCard balance={balance} />
       <IncomeCard onTotalChange={setTotalIncome} />
       <ExpenseCard onTotalChange={setTotalExpense} />
