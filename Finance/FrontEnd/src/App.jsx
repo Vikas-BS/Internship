@@ -6,6 +6,8 @@ import Home from './pages/Home';
 import Navbar from './pages/Navbar';
 import Profile from './pages/Profile';
 import SetPassword from './pages/SetPassword';
+import IncomePage from './pages/IncomePage';
+import ExpensePage from './pages/ExpensePage';
 import { ToastContainer } from "react-toastify";
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import "react-toastify/dist/ReactToastify.css";
@@ -23,6 +25,8 @@ function App() {
           <Route path="/login" element={<Login setUserName={setUserName} />} />
           <Route path="/set-password" element={<SetPassword />} />
           <Route path="/signup" element={<Signup setUserName={setUserName} />} />
+          <Route path="/incomepage" element={<IncomePage/>} />
+          <Route path="/expensepage" element={<ExpensePage/>} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/home" element={<Home />} />
         </Routes>

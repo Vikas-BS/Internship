@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { MoreVertical } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const ExpenseCard = ({ onTotalChange }) => {
   const [showModal, setShowModal] = useState(false);
@@ -11,6 +12,7 @@ const ExpenseCard = ({ onTotalChange }) => {
     description: "",
   });
   const [total, setTotal] = useState(0);
+  const navigate = useNavigate();
 
   const fetchExpense = async () => {
     try {
@@ -86,26 +88,32 @@ const ExpenseCard = ({ onTotalChange }) => {
 
   return (
     <>
-      <div className="bg-white max-w-sm w-full text-black rounded-xl p-6  border border-gray-200 transform transition-transform duration-300 hover:-translate-y-1 hover:scale-105">
+    
+      <div onClick={()=> navigate("/expensepage")} className="bg-gradient-to-tr from-red-100 via-white to-white text-black rounded-2xl p-6 shadow-md border  transform transition-transform duration-300 hover:-translate-y-1 hover:scale-[1.02] w-full max-w-sm hover:cursor-pointer">
         <div className="flex justify-between items-start">
-          <h3 className="text-md text-gray-700 font-medium">Expenses</h3>
+          <h3 className="text-lg font-semibold text-red-700">Expenses</h3>
           <button
-            onClick={handleOpenModal}
-            className="p-2 bg-gray-200 hover:bg-gray-300 rounded-full transition"
+            onClick={(e)=>{
+              e.stopPropagation();
+              handleOpenModal();
+            }}
+            className="p-2 bg-red-200 hover:bg-red-300 rounded-full transition"
             title="Add Expense"
           >
-            <MoreVertical className="text-gray-600 hover:text-blue-600" size={18} />
+            <MoreVertical className="text-red-700" size={18} />
           </button>
         </div>
-        <div className="text-2xl font-semibold text-red-600 mt-3 break-words">
+        <div className="text-3xl font-bold text-red-600 mt-4 truncate max-w-full">
           ₹ {total.toLocaleString("en-IN", { minimumFractionDigits: 2 })}
         </div>
+        <p className="text-sm text-gray-500 mt-1">Total expenses</p>
       </div>
 
+     
       {showModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-          <div className="bg-white p-6 rounded-xl w-full max-w-md">
-            <h2 className="text-xl font-bold mb-4">Add Expense</h2>
+        <div className="fixed inset-0 bg-black bg-opacity-40 flex justify-center items-center z-50 px-4">
+          <div className="bg-white p-6 rounded-2xl shadow-xl w-full max-w-md">
+            <h2 className="text-xl font-bold mb-5 text-red-600">Add Expense</h2>
 
             <input
               type="text"
@@ -113,7 +121,7 @@ const ExpenseCard = ({ onTotalChange }) => {
               value={formData.title}
               onChange={handleChange}
               placeholder="Title"
-              className="w-full p-2 border rounded mb-3"
+              className="w-full p-3 border bg-white text-black rounded-lg focus:outline-none focus:ring-2 focus:ring-red-300 mb-4"
             />
             <input
               type="number"
@@ -121,13 +129,13 @@ const ExpenseCard = ({ onTotalChange }) => {
               value={formData.amount}
               onChange={handleChange}
               placeholder="Amount"
-              className="w-full p-2 border rounded mb-3"
+              className="w-full p-3 border bg-white text-black rounded-lg focus:outline-none focus:ring-2 focus:ring-red-300 mb-4"
             />
             <select
               name="category"
               value={formData.category}
               onChange={handleChange}
-              className="w-full p-2 border rounded mb-3"
+              className="w-full p-3 border bg-white text-black rounded-lg focus:outline-none focus:ring-2 focus:ring-red-300 mb-4"
             >
               <option value="" disabled>Select Category</option>
               <option>Food</option>
@@ -143,18 +151,19 @@ const ExpenseCard = ({ onTotalChange }) => {
               value={formData.description}
               onChange={handleChange}
               placeholder="Description (optional)"
-              className="w-full p-2 border rounded mb-3"
+              rows={3}
+              className="w-full p-3 border bg-white text-black rounded-lg focus:outline-none focus:ring-2  mb-4"
             />
-            <div className="flex justify-end gap-2">
+            <div className="flex justify-end gap-2 mt-2">
               <button
                 onClick={handleCloseModal}
-                className="px-4 py-2 text-black bg-gray-50 rounded"
+                className="px-4 py-2 text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition"
               >
                 Cancel
               </button>
               <button
                 onClick={handleSubmit}
-                className="px-4 py-2 bg-blue-500 text-white rounded"
+                className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition"
               >
                 Add
               </button>
