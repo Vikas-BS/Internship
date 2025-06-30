@@ -61,17 +61,18 @@ const Login = ({ setUserName }) => {
   };
 
   return (
-    <div className="min-h-screen w-screen flex items-center justify-center bg-slate-300">
-      <div className="w-full max-w-md sm:max-w-lg md:max-w-xl lg:max-w-2xl p-6 sm:p-8 space-y-6 bg-white rounded-lg shadow-md transition-all duration-300">
+    <div className="min-h-screen w-screen flex items-center justify-center bg-slate-900 ">
+      <div className="w-full max-w-md sm:max-w-lg md:max-w-xl lg:max-w-xl p-6 sm:p-8 space-y-6 bg-slate-800  rounded-lg shadow-md transition-all duration-300">
         <AuthForm type="login" onSubmit={handleLogin} />
-        <div className="flex justify-center">
+        <div className="flex justify-center ">
           <GoogleLogin
             onSuccess={handleGoogleSuccess}
             onError={() => console.log('Google login failed')}
+          
           />
         </div>
 
-        <p className="text-sm text-center text-gray-600">
+        <p className="text-md text-center  text-slate-500">
           Don't have an account?{' '}
           <a href="/signup" className="text-indigo-600 hover:underline">Sign Up</a>
         </p>

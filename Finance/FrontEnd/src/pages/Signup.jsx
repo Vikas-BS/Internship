@@ -37,10 +37,10 @@ const Signup = ({ setUserName }) => {
   };
 
   return (
-    <div className="min-h-screen w-screen flex items-center justify-center bg-slate-300">
-      <div className="w-full max-w-md sm:max-w-lg md:max-w-xl lg:max-w-2xl p-6 sm:p-8 space-y-6 bg-white rounded-lg shadow-md transition-all duration-300">
+    <div className="min-h-screen w-screen flex items-center justify-center bg-slate-900">
+      <div className="w-full max-w-md sm:max-w-lg md:max-w-xl lg:max-w-xl p-6 sm:p-8 space-y-6 bg-slate-800 rounded-lg shadow-md transition-all duration-300">
         <AuthForm type="signup" onSubmit={handleSignup} />
-        <p className="text-sm text-center text-gray-600">
+        <p className="text-md text-center text-slate-500">
           Already have an account?{' '}
           <a href="/login" className="text-indigo-600 hover:underline">Login</a>
         </p>

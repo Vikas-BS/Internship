@@ -21,7 +21,7 @@ const AuthForm = ({ type, onSubmit }) => {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
-      <h2 className="text-2xl font-bold text-center text-gray-800">
+      <h2 className="text-2xl font-bold text-center text-white">
         {type === "login" ? "Login to your account" : "Create an account"}
       </h2>
 
@@ -32,7 +32,7 @@ const AuthForm = ({ type, onSubmit }) => {
           placeholder="Full Name"
           value={formData.name}
           onChange={handleChange}
-          className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          className="w-full px-4 py-2 border rounded-md bg-slate-600"
           required
         />
       )}
@@ -43,7 +43,7 @@ const AuthForm = ({ type, onSubmit }) => {
         placeholder="Email"
         value={formData.email}
         onChange={handleChange}
-        className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+        className="w-full px-4 py-2 border rounded-md bg-slate-600 "
         required
       />
 
@@ -53,7 +53,7 @@ const AuthForm = ({ type, onSubmit }) => {
         placeholder="Password"
         value={formData.password}
         onChange={handleChange}
-        className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+        className="w-full px-4 py-2 border rounded-md bg-slate-600"
         required
       />
 

@@ -12,7 +12,7 @@ const Profile = () => {
   const [saving, setSaving] = useState(false)
   const [errors, setErrors] = useState({})
   const [toast, setToast] = useState(null)
-  const [isEditing, setIsEditing] = useState(false) // NEW
+  const [isEditing, setIsEditing] = useState(false)
 
   const showToast = (message, type = "success") => {
     setToast({ message, type })
@@ -27,7 +27,7 @@ const Profile = () => {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         })
-        const data = await res.json()
+        const data = await res.json();
         setUserData(data)
         setPreviewPic(data.profilePic)
       } catch (err) {
@@ -107,7 +107,6 @@ const Profile = () => {
       if (res.ok) {
         showToast("Profile updated successfully!");
 
-        // ✅ Fetch updated user data again
         const refreshed = await fetch(
           "http://localhost:4000/api/user/profile",
           {
