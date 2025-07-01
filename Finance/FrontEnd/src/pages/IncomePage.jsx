@@ -31,8 +31,9 @@ const Income = () => {
       });
       const data = await res.json();
       if (res.ok) {
-        setIncomes(data);
-        setFilteredIncomes(data);
+        const sorted = data.sort((a, b) => new Date(b.date) - new Date(a.date));
+        setIncomes(sorted);
+        setFilteredIncomes(sorted);
         const uniqueCategories = [...new Set(data.map((item) => item.category))];
         setCategories(uniqueCategories);
       } else {
@@ -123,12 +124,21 @@ const Income = () => {
                     </h2>
                   </div>
                   <span className="text-green-600 font-bold text-lg">
-                    ₹{" "}
+                    + ₹{" "}
                     {Number(item.amount).toLocaleString("en-IN", {
                       minimumFractionDigits: 2,
                     })}
                   </span>
                 </div>
+                <p className="text-sm text-gray-500">
+                  Date:{" "}
+                  {new Date(item.date).toLocaleDateString("en-IN", {
+                    day: "2-digit",
+                    month: "short",
+                    year: "numeric",
+                  })}
+                </p>
+
                 <p className="text-sm text-gray-500">
                   Category:{" "}
                   <span className="font-medium text-gray-700">

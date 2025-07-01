@@ -1,7 +1,7 @@
 import Income from '../models/Income.js';
 
 export const addIncome = async(req,res) =>{
-    const {title,amount,category,description} = req.body;
+    const {title,amount,category,description,date} = req.body;
     console.log('Request body:', req.body);
     console.log('User ID:', req.userId);
     try{
@@ -11,6 +11,7 @@ export const addIncome = async(req,res) =>{
             amount:Number(amount),
             category,
             description,
+            date
         
         });
 

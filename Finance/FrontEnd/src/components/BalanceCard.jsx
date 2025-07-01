@@ -7,7 +7,7 @@ const BalanceCard = ({ balance }) => {
       : "0.00";
 
   return (
-    <div className="bg-white/30 backdrop-blur-md text-gray-900 rounded-2xl p-6 shadow-xl border border-gray-200 hover:shadow-2xl transition-transform duration-300 hover:-translate-y-1 hover:scale-[1.03] w-full max-w-sm relative overflow-hidden">
+    <div className=" h-full bg-white/30  backdrop-blur-md text-gray-900 rounded-2xl p-6 shadow-md border border-gray-200 hover:shadow-2xl transition-transform duration-300 hover:-translate-y-1 hover:scale-[1.03] w-full max-w-sm relative overflow-hidden">
      
       <div className="absolute inset-0 rounded-2xl border-2 border-transparent bg-gradient-to-tr from-indigo-300 via-purple-300 to-pink-300 opacity-20 pointer-events-none"></div>
 

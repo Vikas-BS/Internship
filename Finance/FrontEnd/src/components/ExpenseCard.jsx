@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 
 const ExpenseCard = ({ onTotalChange }) => {
   const [showModal, setShowModal] = useState(false);
+  const [customCategory , setCustomCategory] = useState("");
   const [formData, setFormData] = useState({
     title: "",
     amount: "",
@@ -39,6 +40,7 @@ const ExpenseCard = ({ onTotalChange }) => {
 
   const handleSubmit = async () => {
     const token = localStorage.getItem("token");
+    const finalCategory = formData.category === 'Others' ? customCategory : formData.category;
 
     if (!formData.title || !formData.amount || !formData.category) {
       toast.error("Please fill all required fields.");
@@ -54,6 +56,7 @@ const ExpenseCard = ({ onTotalChange }) => {
         },
         body: JSON.stringify({
           ...formData,
+          category:finalCategory,
           amount: Number(formData.amount),
         }),
       });
@@ -146,6 +149,19 @@ const ExpenseCard = ({ onTotalChange }) => {
               <option>Healthcare</option>
               <option>Others</option>
             </select>
+
+            {formData.category=== 'Others' &&(
+              <input
+              type="text"
+              value={customCategory}
+              onChange={(e) => setCustomCategory(e.target.value)}
+              placeholder="Enter your custom category"
+              className="w-full p-3 border bg-white text-black rounded-lg focus:outline-none focus:ring-2 focus:ring-green-300 mb-4"
+              required
+
+              >
+              </input>
+            )}
             <textarea
               name="description"
               value={formData.description}

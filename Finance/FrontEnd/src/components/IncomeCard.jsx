@@ -3,10 +3,11 @@
   import { MoreVertical } from "lucide-react";
   import { useNavigate } from "react-router-dom";
 
-  const IncomeCard = ({ onTotalChange }) => {
+  const IncomeCard = ({ onTotalChange, onIncomeAdded }) => {
     const [showModal, setShowModal] = useState(false);
     const [formData, setFormData] = useState({ title: "", amount: "", category: "", description: "" });
     const [total, setTotal] = useState(0);
+    const [customCategory , setCustomCategory] = useState("");
     const navigate =  useNavigate();
 
     const fetchIncome = async () => {
@@ -31,6 +32,7 @@
 
     const handleSubmit = async () => {
       const token = localStorage.getItem("token");
+      const finalCategory = formData.category === 'Others' ? customCategory : formData.category;
       if (!formData.title || !formData.amount || !formData.category) {
         toast.error("Please fill all required fields.");
         return;
@@ -42,13 +44,17 @@
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
-          body: JSON.stringify({ ...formData, amount: Number(formData.amount) }),
+          body: JSON.stringify({ ...formData,category:finalCategory, amount: Number(formData.amount) }),
         });
         const data = await res.json();
         if (res.ok) {
           await fetchIncome();
           handleCloseModal();
           toast.success("Income added successfully!");
+          if (typeof onIncomeAdded === "function") {
+          onIncomeAdded();
+          }
+          
         } else {
           toast.error(data.message || "Failed to add income.");
         }
@@ -74,8 +80,8 @@
 
     return (
       <>
-        <div onClick={() => navigate("/incomepage")} className="bg-gradient-to-br from-green-100 via-white to-white text-black rounded-2xl p-6 shadow-md border border-gray-100 transform transition-transform duration-300 hover:-translate-y-1 hover:scale-[1.02] w-full max-w-sm hover:cursor-pointer">
-          <div className="flex justify-between items-start">
+        <div onClick={() => navigate("/incomepage")} className=" bg-gradient-to-br from-green-100 via-white to-white text-black rounded-2xl p-6 shadow-md border border-gray-100 transform transition-transform duration-300 hover:-translate-y-1 hover:scale-[1.02] w-full max-w-sm hover:cursor-pointer">
+          <div className="  flex justify-between items-start">
             <h3 className="text-lg font-semibold text-green-700">Income</h3>
             <button
               onClick={(e) =>{
@@ -126,6 +132,18 @@
                 <option>Freelancing</option>
                 <option>Others</option>
               </select>
+
+              {formData.category === 'Others' && (
+                <input
+                type="text"
+                value={customCategory}
+                onChange={(e)=> setCustomCategory(e.target.value)}
+                placeholder="Enter your custom category"
+                className="w-full p-3 border bg-white text-black rounded-lg focus:outline-none focus:ring-2 focus:ring-green-300 mb-4"
+                required
+                >
+                </input>
+              )}
               <textarea
                 name="description"
                 value={formData.description}

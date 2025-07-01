@@ -35,8 +35,9 @@ const Expense = () =>{
         })
         const data = await res.json();
         if(res.ok){
-          setExpense(data);
-          setFilteredExpense(data);
+          const sorted = data.sort((a, b) => new Date(b.date) - new Date(a.date));
+          setExpense(sorted);
+          setFilteredExpense(sorted);
           const uniqueCategories = [...new Set(data.map((item) => item.category))]
           setCategories(uniqueCategories);
         }else{
@@ -84,8 +85,8 @@ const Expense = () =>{
             <ArrowLeft size={20} /> Back
           </button>
 
-          <h1 className="text-2xl font-bold text-green-700 mb-6">
-            Income History
+          <h1 className="text-2xl font-bold text-red-500 mb-6">
+            Expense History
           </h1>
 
           <div className="flex flex-col sm:flex-row gap-4 mb-6">
@@ -127,13 +128,21 @@ const Expense = () =>{
                         {item.title}
                       </h2>
                     </div>
-                    <span className="text-green-600 font-bold text-lg">
-                      ₹{" "}
+                    <span className="text-red-500 font-bold text-lg">
+                      -₹{" "}
                       {Number(item.amount).toLocaleString("en-IN", {
                         minimumFractionDigits: 2,
                       })}
                     </span>
                   </div>
+                  <p className="text-sm text-gray-500">
+                    Date:{" "}
+                    {new Date(item.date).toLocaleDateString("en-IN", {
+                      day: "2-digit",
+                      month: "short",
+                      year: "numeric",
+                    })}
+                  </p>
                   <p className="text-sm text-gray-500">
                     Category:{" "}
                     <span className="font-medium text-gray-700">

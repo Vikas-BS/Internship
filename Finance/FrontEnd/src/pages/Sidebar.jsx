@@ -28,6 +28,12 @@ const Sidebar = ({ isOpen, onClose }) => {
           <li className="hover:text-blue-500 cursor-pointer"
           onClick={() => handleNavigation("/home")}
           >Home</li>
+          <li className="hover:text-blue-500 cursor-pointer"
+          onClick={() => handleNavigation("/incomepage")}
+          >Income</li>
+          <li className="hover:text-blue-500 cursor-pointer"
+          onClick={() => handleNavigation("/expensepage")}
+          >Expense</li>
         </ul>
       </div>
     </>
