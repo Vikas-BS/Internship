@@ -14,11 +14,11 @@ const BASE_COLORS = [
   "#03A9F4", "#8BC34A", "#FF5722", "#E91E63",
 ];
 
-const IncomePieChart = ({ trigger }) => {
-  const [incomeData, setIncomeData] = useState([]);
+const ExpensePieChart = ({ trigger }) => {
+  const [expenseData, setExpenseData] = useState([]);
   const [categoryColorMap, setCategoryColorMap] = useState({});
 
-  const fetchIncome = async () => {
+  const fetchExpense = async () => {
     const token = localStorage.getItem("token");
     const res = await fetch("http://localhost:4000/api/expense", {
       headers: { Authorization: `Bearer ${token}` },
@@ -51,11 +51,11 @@ const IncomePieChart = ({ trigger }) => {
     });
 
     setCategoryColorMap(newColorMap);
-    setIncomeData(chartData);
+    setExpenseData(chartData);
   };
 
   useEffect(() => {
-    fetchIncome();
+    fetchExpense();
   }, [trigger]);
 
   return (
@@ -68,7 +68,7 @@ const IncomePieChart = ({ trigger }) => {
         <ResponsiveContainer width="100%" height="100%">
           <PieChart>
             <Pie
-              data={incomeData}
+              data={expenseData}
               dataKey="value"
               nameKey="name"
               cx="50%"
@@ -76,7 +76,7 @@ const IncomePieChart = ({ trigger }) => {
               outerRadius={100}
               
             >
-              {incomeData.map((entry, index) => (
+              {expenseData.map((entry, index) => (
                 <Cell
                   key={`cell-${index}`}
                   fill={categoryColorMap[entry.name] || "#ccc"}
@@ -91,4 +91,4 @@ const IncomePieChart = ({ trigger }) => {
   );
 };
 
-export default IncomePieChart;
+export default ExpensePieChart;

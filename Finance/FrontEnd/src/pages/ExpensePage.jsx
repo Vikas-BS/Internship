@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { ArrowLeft } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import Income from "./IncomePage";
 
 const categoryIcons = {
   Food: "🍔",
@@ -111,7 +110,7 @@ const Expense = () =>{
           </div>
 
           {currentItems.length === 0 ? (
-            <p className="text-gray-500">No income entries found.</p>
+            <p className="text-gray-500">No expense entries found.</p>
           ) : (
             <div className="space-y-4">
               {currentItems.map((item, index) => (

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import DashboardCards from "../components/Dashboardcards";
-import IncPi from "../components/IncPi"
+import axios from "../axios";
+import { toast } from "react-toastify";
 
 
 
@@ -9,17 +10,11 @@ const Home = () =>{
 
     
     const fetchUser = async() =>{
-        const token = localStorage.getItem("token");
-        const res = await fetch("http://localhost:4000/api/home", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        const data = await res.json();
-        if(res.ok){
-            setUser(data.user)
-        }else{
-            console.error(data.message)
+        try{
+          const res =  await axios.get('/home');
+          setUser(res.data.user);
+        }catch(err){
+          toast.error(err.response?.data?.message || "Failed to fetch user")
         }
 
     };

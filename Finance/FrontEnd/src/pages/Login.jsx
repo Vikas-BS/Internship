@@ -12,12 +12,13 @@ const Login = ({ setUserName }) => {
       const res = await fetch('http://localhost:4000/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data)
+        body: JSON.stringify(data),
+        credentials: 'include'
       });
 
       const result = await res.json();
       if (res.ok) {
-        localStorage.setItem('token', result.token);
+       
         if (result.user && result.user.name) {
           setUserName(result.user.name);
         }
@@ -37,7 +38,8 @@ const Login = ({ setUserName }) => {
       const res = await fetch('http://localhost:4000/api/auth/google-login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ token: credentialResponse.credential })
+        body: JSON.stringify({ token: credentialResponse.credential }),
+         credentials: 'include'
       });
 
       const result = await res.json();
