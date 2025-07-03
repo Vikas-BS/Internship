@@ -17,12 +17,9 @@ const ExpenseCard = ({ onTotalChange }) => {
 
   const fetchExpense = async () => {
     try {
-      const token = localStorage.getItem("token");
       const res = await fetch("http://localhost:4000/api/expense", {
         method: "GET",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        credentials: 'include'
       });
 
       const data = await res.json();
@@ -39,7 +36,6 @@ const ExpenseCard = ({ onTotalChange }) => {
   };
 
   const handleSubmit = async () => {
-    const token = localStorage.getItem("token");
     const finalCategory = formData.category === 'Others' ? customCategory : formData.category;
 
     if (!formData.title || !formData.amount || !formData.category) {
@@ -52,8 +48,8 @@ const ExpenseCard = ({ onTotalChange }) => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
         },
+        credentials: 'include',
         body: JSON.stringify({
           ...formData,
           category:finalCategory,

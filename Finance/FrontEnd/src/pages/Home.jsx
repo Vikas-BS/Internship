@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from "react";
 import DashboardCards from "../components/Dashboardcards";
-import axios from "../axios";
-import { toast } from "react-toastify";
 
 
 
@@ -10,11 +8,17 @@ const Home = () =>{
 
     
     const fetchUser = async() =>{
-        try{
-          const res =  await axios.get('/home');
-          setUser(res.data.user);
-        }catch(err){
-          toast.error(err.response?.data?.message || "Failed to fetch user")
+
+        const res = await fetch("http://localhost:4000/api/home", {
+          method: 'GET',
+          
+          credentials: 'include'
+        });
+        const data = await res.json();
+        if(res.ok){
+            setUser(data.user)
+        }else{
+            console.error(data.message)
         }
 
     };

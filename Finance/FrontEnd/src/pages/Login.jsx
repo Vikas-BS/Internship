@@ -1,26 +1,28 @@
-import React from 'react';
 import AuthForm from '../components/AuthForm';
 import { useNavigate } from 'react-router-dom';
 import { GoogleLogin } from '@react-oauth/google';
 import { toast } from "react-toastify";
+import { useUser } from '../context/UserContext';
 
-const Login = ({ setUserName }) => {
+const Login = ({ }) => {
+  const {setUser} = useUser();
   const navigate = useNavigate();
 
   const handleLogin = async (data) => {
     try {
       const res = await fetch('http://localhost:4000/api/auth/login', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        
+        credentials:'include',
         body: JSON.stringify(data),
-        credentials: 'include'
+        
       });
 
       const result = await res.json();
       if (res.ok) {
        
-        if (result.user && result.user.name) {
-          setUserName(result.user.name);
+        if (result.user.name) {
+          setUser(result.user.name);
         }
         navigate('/home');
         toast.success('Loggedin Successfuly!!!');
@@ -35,18 +37,20 @@ const Login = ({ setUserName }) => {
 
   const handleGoogleSuccess = async (credentialResponse) => {
     try {
-      const res = await fetch('http://localhost:4000/api/auth/google-login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      const res = await fetch("http://localhost:4000/api/auth/google-login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
         body: JSON.stringify({ token: credentialResponse.credential }),
-         credentials: 'include'
       });
 
       const result = await res.json();
       if (res.ok) {
         localStorage.setItem('token', result.token);
-        if (result.user && result.user.name) {
-          setUserName(result.user.name);
+        if (result.user.name) {
+          setUser(result.user.name);
         }if (!result.user.hasPassword) {
           navigate("/set-password");
         } else {

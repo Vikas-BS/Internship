@@ -26,11 +26,9 @@ const Expense = () =>{
 
     const fetchexpense = async() =>{
       try{
-        const token = localStorage.getItem('token');
         const res = await fetch("http://localhost:4000/api/expense",{
-          headers:{
-            Authorization : `Bearer ${token}`
-          }
+          
+          credentials:'include'
         })
         const data = await res.json();
         if(res.ok){

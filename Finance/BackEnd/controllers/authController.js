@@ -5,7 +5,7 @@ import { OAuth2Client } from 'google-auth-library';
 import User from '../models/User.js'; 
 
 dotenv.config();
-const SECRET_KEY = process.env.JWT_SECRET;
+const SECRET_KEY = process.env.ACCESS_TOKEN_SECRET;
 const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
 
 const client = new OAuth2Client(GOOGLE_CLIENT_ID);
@@ -48,8 +48,18 @@ export const loginUser = async (req, res) => {
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) return res.status(400).json({ message: 'Invalid credentials' });
 
-   const token = jwt.sign({email, password}, process.env.ACCESS_TOKEN_SECRET);
-    res.cookie('authcookie',token,{maxAge:900000,httpOnly:true}) 
+    const token = jwt.sign(
+      { userId: user._id, name: user.name, email: user.email },
+      process.env.ACCESS_TOKEN_SECRET,
+      { expiresIn: '1d' }
+    );
+    res.cookie("authcookie", token, {
+      httpOnly: true, // ✅ secure from JS access
+      secure: false, // ✅ false in dev (localhost), true in production (HTTPS)
+      sameSite: "Lax", // ✅ required for cross-origin
+      maxAge: 86400000, // ✅ 1 day
+    });
+
     res.status(200).json({
       message: 'Login successful',
       token,
@@ -79,10 +89,17 @@ export const googleLogin = async (req, res) => {
     }
 
     const jwtToken = jwt.sign(
-      { userId: user._id },
-      SECRET_KEY,
+      { userId: user._id, name: user.name, email: user.email },
+      process.env.ACCESS_TOKEN_SECRET,
       { expiresIn: '1d' }
     );
+    res.cookie("authcookie", jwtToken, {
+      httpOnly: true,
+      secure: false,
+      sameSite: "Lax",
+      maxAge: 86400000,
+    });
+
 
     res.status(200).json({
       token: jwtToken,
@@ -109,3 +126,13 @@ export const setPassword = async (req, res) => {
 
   res.status(200).json({ message: "Password set successfully" });
 };
+
+
+export const logOutUser = async (req , res) =>{
+  res.clearCookie("authcookie" ,{
+    httpOnly: true,
+    sameSite: "Lax",
+    secure: false, // true in production
+  });
+  res.status(200).json({ message: "Logged out successfully" });
+}

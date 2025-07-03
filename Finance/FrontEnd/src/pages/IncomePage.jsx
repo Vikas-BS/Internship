@@ -25,9 +25,9 @@ const Income = () => {
 
   const fetchIncome = async () => {
     try {
-      const token = localStorage.getItem("token");
       const res = await fetch("http://localhost:4000/api/income", {
-        headers: { Authorization: `Bearer ${token}` },
+        
+        credentials:'include'
       });
       const data = await res.json();
       if (res.ok) {

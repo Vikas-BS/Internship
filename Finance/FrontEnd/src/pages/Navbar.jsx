@@ -1,9 +1,11 @@
 import React, { useState, useRef, useEffect, use } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Sidebar from './Sidebar';
+import { useUser } from '../context/UserContext';
 
 
 const Navbar = () => {
+  const {user , setUser} = useUser();
   const location = useLocation();
   const hideOn = ["/", "/login", "/signup"];
   const [open, setOpen] = useState(false);
@@ -14,21 +16,16 @@ const Navbar = () => {
 
   useEffect (() =>{
     const fetchUser = async () =>{
-      const token = localStorage.getItem('token');
-      if(!token)return;
 
       try{
         const res = await fetch("http://localhost:4000/api/home",{
-          headers:{
-            Authorization: `Bearer ${token}`,
-          },
+          method:'GET',
+          credentials:'include'
         });
         const data = await res.json();
-        if(res.ok && data.user?.name){
-          setUserName(data.user.name)
-        }
+
       }catch(err){
-        console.error("Failed tpo fetch user" , err)
+        console.error("Failed to fetch user" , err)
       }
     }
     fetchUser();
@@ -51,9 +48,18 @@ const Navbar = () => {
 
   if (hideOn.includes(location.pathname)) return null;
 
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    navigate("/login");
+  const handleLogout = async () => {
+    try{
+      await fetch("http://localhost:4000/api/auth/logout",{
+        method:'POST',
+        credentials:'include',
+      });
+      navigate("/login");
+      setUser(null);
+
+    }catch(err){
+      toast.error("Logout Failed")
+    }
   };
 
   return (
@@ -83,7 +89,7 @@ const Navbar = () => {
             </svg>
           </button>
           <h1 className="text-xl font-bold tracking-wide">
-            Hi, Welcome back {userName || "User"} 👋🏻
+            Hi, Welcome back {user?.name || "User"} 👋🏻
           </h1>
         </div>
 

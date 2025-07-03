@@ -19,9 +19,9 @@ const ExpensePieChart = ({ trigger }) => {
   const [categoryColorMap, setCategoryColorMap] = useState({});
 
   const fetchExpense = async () => {
-    const token = localStorage.getItem("token");
     const res = await fetch("http://localhost:4000/api/expense", {
-      headers: { Authorization: `Bearer ${token}` },
+      
+      credentials:'include',
     });
     const result = await res.json();
     const rawData = Array.isArray(result) ? result : result.data || [];

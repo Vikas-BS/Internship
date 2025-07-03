@@ -11,6 +11,7 @@ const Signup = ({ setUserName }) => {
       const res = await fetch('http://localhost:4000/api/auth/signup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        credentials:'include',
         body: JSON.stringify(data)
       });
 
@@ -18,10 +19,6 @@ const Signup = ({ setUserName }) => {
 
       if (res.ok) {
         toast.success('Signup success 🎉');
-
-        if (result.token) {
-          localStorage.setItem('token', result.token);
-        }
 
         if (setUserName && result.user?.name) {
           setUserName(result.user.name);

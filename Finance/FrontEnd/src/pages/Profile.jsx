@@ -26,6 +26,7 @@ const Profile = () => {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
+          credentials:'include'
         })
         const data = await res.json();
         setUserData(data)
@@ -98,8 +99,8 @@ const Profile = () => {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
+        credentials:'include',
         body: JSON.stringify(userData),
       });
 
@@ -110,9 +111,8 @@ const Profile = () => {
         const refreshed = await fetch(
           "http://localhost:4000/api/user/profile",
           {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
+            
+            credentials:'include'
           }
         );
         const newData = await refreshed.json();

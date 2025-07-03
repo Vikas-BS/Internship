@@ -6,11 +6,11 @@ export const addExpense = async (req, res) => {
 
   try {
  
-    const incomes = await Income.find({ user: req.userId });
+    const incomes = await Income.find({ user: req.user.userId });
     const totalIncome = incomes.reduce((acc, income) => acc + income.amount, 0);
 
  
-    const expenses = await Expense.find({ user: req.userId });
+    const expenses = await Expense.find({ user: req.user.userId });
     const totalExpense = expenses.reduce((acc, expense) => acc + expense.amount, 0);
 
   
@@ -19,7 +19,7 @@ export const addExpense = async (req, res) => {
     }
 
     const expense = await Expense.create({
-      user: req.userId,
+      user: req.user.userId,
       title,
       amount,
       category,
@@ -36,7 +36,7 @@ export const addExpense = async (req, res) => {
 
 export const getExpense = async(req , res)=>{
     try{
-        const expenses = await Expense.find({user:req.userId}).sort({date:-1});
+        const expenses = await Expense.find({user:req.user.userId}).sort({date:-1});
     res.status(200).json(expenses);
     }catch(err){
         res.status(500).json({message:err.message})

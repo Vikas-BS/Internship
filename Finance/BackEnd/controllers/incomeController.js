@@ -2,11 +2,11 @@ import Income from '../models/Income.js';
 
 export const addIncome = async(req,res) =>{
     const {title,amount,category,description,date} = req.body;
-    console.log('Request body:', req.body);
-    console.log('User ID:', req.userId);
+    // console.log('Request body:', req.body);
+    // console.log('User ID:', req.user);
     try{
         const income = await Income.create({
-            user: req.userId,
+            user: req.user.userId,
             title,
             amount:Number(amount),
             category,
@@ -24,7 +24,7 @@ export const addIncome = async(req,res) =>{
 
 export const getIncomes = async(req,res) =>{
     try{
-        const incomes = await Income.find({user:req.userId}).sort({date:-1});
+        const incomes = await Income.find({user:req.user.userId}).sort({date:-1});
         res.json(incomes);
     }catch(err){
         res.status(500).json({message:err.message})

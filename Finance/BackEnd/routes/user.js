@@ -7,7 +7,7 @@ const router = express.Router();
 
 router.get('/profile', verifyToken, async (req, res) => {
   try {
-    const user = await User.findById(req.userId).select('name email profilePic phone ');
+    const user = await User.findById(req.user.userId).select('name email profilePic phone ');
     if (!user) return res.status(404).json({ message: 'User not found' });
     res.json(user);
   } catch (err) {
@@ -20,7 +20,7 @@ router.put('/profile', verifyToken, async (req, res) => {
   const { name, profilePic, phone } = req.body;
   try {
     const user = await User.findByIdAndUpdate(
-      req.userId,
+      req.user.userId,
       { name, profilePic, phone },
       { new: true }
     ).select('name email profilePic phone');

@@ -7,6 +7,7 @@ import homeRoutes from './routes/home.js'
 import cors from 'cors';
 import mongoose from 'mongoose';
 import userRoutes from './routes/user.js'
+import cookieParser from 'cookie-parser';
 dotenv.config();
 
 const app = express();
@@ -15,6 +16,7 @@ app.use(cors({
   credentials: true
 }));
 app.use(express.json());
+app.use(cookieParser());
 
 app.use('/api/auth', authRoutes);
 app.use('/api/income', incomeRoutes);

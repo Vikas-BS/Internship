@@ -13,6 +13,7 @@ const SetPassword = () => {
       const res = await fetch('http://localhost:4000/api/auth/set-password', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        credentials:'include',
         body: JSON.stringify({ email, newPassword })
       });
 

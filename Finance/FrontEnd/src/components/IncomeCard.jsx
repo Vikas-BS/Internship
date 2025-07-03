@@ -12,10 +12,10 @@
 
     const fetchIncome = async () => {
       try {
-        const token = localStorage.getItem("token");
         const res = await fetch("http://localhost:4000/api/income", {
           method: "GET",
-          headers: { Authorization: `Bearer ${token}` },
+          
+          credentials:'include'
         });
         const data = await res.json();
         if (res.ok) {
@@ -31,7 +31,6 @@
     };
 
     const handleSubmit = async () => {
-      const token = localStorage.getItem("token");
       const finalCategory = formData.category === 'Others' ? customCategory : formData.category;
       if (!formData.title || !formData.amount || !formData.category) {
         toast.error("Please fill all required fields.");
@@ -41,9 +40,9 @@
         const res = await fetch("http://localhost:4000/api/income", {
           method: "POST",
           headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
           },
+          credentials:'include',
           body: JSON.stringify({ ...formData,category:finalCategory, amount: Number(formData.amount) }),
         });
         const data = await res.json();
