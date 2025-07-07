@@ -1,34 +1,50 @@
-import React, { useState, useRef, useEffect, use } from 'react';
+import React, { useState, useRef, useEffect, } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import { useUser } from '../context/UserContext';
 
 
 const Navbar = () => {
-  const {user , setUser} = useUser();
+  const {user , setUser } = useUser();
   const location = useLocation();
   const hideOn = ["/", "/login", "/signup"];
   const [open, setOpen] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [userName , setUserName] = useState("");
   const dropdownRef = useRef(null);
   const navigate = useNavigate();
 
   useEffect (() =>{
     const fetchUser = async () =>{
-
+      
       try{
         const res = await fetch("http://localhost:4000/api/home",{
           method:'GET',
           credentials:'include'
         });
+
+        if(res.status === 401){
+          setUser(null);
+          return;
+        }
         const data = await res.json();
+        if(res.ok && data.user){
+          setUser(data.user);
+        }else{
+          setUser(null);
+        }
 
       }catch(err){
         console.error("Failed to fetch user" , err)
+        setUser(null);
       }
     }
-    fetchUser();
+    
+    if (!hideOn.includes(location.pathname)) {
+      fetchUser();
+    } else {
+      setUser(null);
+    }
+    
   },[location.pathname]);
  
 
@@ -54,8 +70,8 @@ const Navbar = () => {
         method:'POST',
         credentials:'include',
       });
-      navigate("/login");
       setUser(null);
+      navigate("/login");
 
     }catch(err){
       toast.error("Logout Failed")
@@ -88,8 +104,9 @@ const Navbar = () => {
               />
             </svg>
           </button>
-          <h1 className="text-xl font-bold tracking-wide">
-            Hi, Welcome back {user?.name || "User"} 👋🏻
+          <h1 className="text-lg sm:text-xl md:text-2xl font-sans italic tracking-wide break-words">
+            Hi, Welcome back{" "} 
+            {user?.name || "User"} 👋🏻
           </h1>
         </div>
 

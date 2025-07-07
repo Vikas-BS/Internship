@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react"
+import { useUser } from "../context/UserContext"
+
 
 const Profile = () => {
   const [userData, setUserData] = useState({
@@ -7,6 +9,7 @@ const Profile = () => {
     phone: "",
     profilePic: "",
   })
+  const {setUser} = useUser();
   const [previewPic, setPreviewPic] = useState(null)
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
@@ -106,6 +109,7 @@ const Profile = () => {
 
       const data = await res.json();
       if (res.ok) {
+        setUser(data);
         showToast("Profile updated successfully!");
 
         const refreshed = await fetch(

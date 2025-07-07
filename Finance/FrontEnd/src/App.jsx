@@ -25,6 +25,7 @@ function App() {
         <Navbar />
         
         <Routes>
+          
           <Route path="/" element={<Login  />} />
           <Route path="/login" element={<Login  />} />
           <Route path="/set-password" element={<SetPassword />} />

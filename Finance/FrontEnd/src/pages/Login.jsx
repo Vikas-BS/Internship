@@ -4,7 +4,7 @@ import { GoogleLogin } from '@react-oauth/google';
 import { toast } from "react-toastify";
 import { useUser } from '../context/UserContext';
 
-const Login = ({ }) => {
+const Login = () => {
   const {setUser} = useUser();
   const navigate = useNavigate();
 
@@ -12,7 +12,7 @@ const Login = ({ }) => {
     try {
       const res = await fetch('http://localhost:4000/api/auth/login', {
         method: 'POST',
-        
+        headers: { 'Content-Type': 'application/json' },
         credentials:'include',
         body: JSON.stringify(data),
         

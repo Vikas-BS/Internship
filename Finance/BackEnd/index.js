@@ -12,7 +12,7 @@ dotenv.config();
 
 const app = express();
 app.use(cors({
-  origin: 'http://localhost:5173', // frontend URL
+  origin: 'http://localhost:5173', 
   credentials: true
 }));
 app.use(express.json());
@@ -26,7 +26,7 @@ app.use('/api/user',userRoutes);
 
 
 
-const PORT = process.env.PORT || 4000;
+const PORT = process.env.PORT || 5173;
 
 mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log('✅ MongoDB connected'))

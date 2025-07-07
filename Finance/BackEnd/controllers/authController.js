@@ -27,6 +27,13 @@ export const registerUser = async (req, res) => {
       SECRET_KEY,
       { expiresIn: '1d' }
     );
+    res.cookie("authcookie", token, {
+      httpOnly: true, 
+      secure: false,
+      sameSite: "Lax", 
+      domain: 'localhost',
+      maxAge: 86400000,
+    });
     res.status(201).json({
       message: 'User registered',
       user: { name: user.name, email: user.email },
@@ -54,10 +61,11 @@ export const loginUser = async (req, res) => {
       { expiresIn: '1d' }
     );
     res.cookie("authcookie", token, {
-      httpOnly: true, // ✅ secure from JS access
-      secure: false, // ✅ false in dev (localhost), true in production (HTTPS)
-      sameSite: "Lax", // ✅ required for cross-origin
-      maxAge: 86400000, // ✅ 1 day
+      httpOnly: true, 
+      secure: false,
+      sameSite: "Lax", 
+      domain: 'localhost',
+      maxAge: 86400000,
     });
 
     res.status(200).json({
@@ -97,6 +105,8 @@ export const googleLogin = async (req, res) => {
       httpOnly: true,
       secure: false,
       sameSite: "Lax",
+      domain: 'localhost',
+      path:"/",
       maxAge: 86400000,
     });
 

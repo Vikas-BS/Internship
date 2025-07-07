@@ -2,36 +2,40 @@ import React from 'react';
 import AuthForm from '../components/AuthForm';
 import { useNavigate } from 'react-router-dom';
 import { toast } from "react-toastify";
+import { useUser } from '../context/UserContext';
 
-const Signup = ({ setUserName }) => {
+const Signup = () => {
   const navigate = useNavigate();
+  const {setUser} = useUser();
 
-  const handleSignup = async (data) => {
-    try {
-      const res = await fetch('http://localhost:4000/api/auth/signup', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        credentials:'include',
-        body: JSON.stringify(data)
-      });
+const handleSignup = async (data) => {
+  try {
+    const res = await fetch("http://localhost:4000/api/auth/signup", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+      body: JSON.stringify(data),
+    });
 
-      const result = await res.json();
+    const result = await res.json();
 
-      if (res.ok) {
-        toast.success('Signup success 🎉');
+    if (res.ok) {
+      toast.success("Signup success 🎉");
 
-        if (setUserName && result.user?.name) {
-          setUserName(result.user.name);
-        }
-        navigate('/home');
-      } else {
-        toast.error('Signup failed');
+      if (setUser && result.user) {
+        setUser(result.user);
       }
-    } catch (err) {
-      console.error(err);
-      alert('Error during signup');
+
+      navigate("/home");
+    } else {
+      toast.error("Signup failed");
     }
-  };
+  } catch (err) {
+    console.error(err);
+    alert("Error during signup");
+  }
+};
+
 
   return (
     <div className="min-h-screen w-screen flex items-center justify-center bg-slate-900">
