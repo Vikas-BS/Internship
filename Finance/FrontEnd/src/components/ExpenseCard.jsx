@@ -3,7 +3,7 @@ import { toast } from "react-toastify";
 import { MoreVertical } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
-const ExpenseCard = ({ onTotalChange }) => {
+const ExpenseCard = ({ onTotalChange , onExpenseAdded }) => {
   const [showModal, setShowModal] = useState(false);
   const [customCategory , setCustomCategory] = useState("");
   const [formData, setFormData] = useState({
@@ -30,6 +30,7 @@ const ExpenseCard = ({ onTotalChange }) => {
       } else {
         toast.error(data.message || "Failed to fetch expenses.");
       }
+      
     } catch (err) {
       toast.error("Fetch error: " + err.message);
     }
@@ -62,7 +63,9 @@ const ExpenseCard = ({ onTotalChange }) => {
         await fetchExpense();
         handleCloseModal();
         toast.success("Expense added successfully!");
-      } else {
+      } if(typeof onExpenseAdded === "function"){
+        onExpenseAdded();
+      }else {
         toast.error(data.message || "Failed to add expense.");
       }
     } catch (err) {

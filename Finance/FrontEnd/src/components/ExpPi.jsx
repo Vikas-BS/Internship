@@ -1,4 +1,4 @@
-import { useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 import {
   PieChart,
   Pie,
@@ -14,14 +14,14 @@ const BASE_COLORS = [
   "#03A9F4", "#8BC34A", "#FF5722", "#E91E63",
 ];
 
-const ExpensePieChart = ({ trigger }) => {
+const ExpensePieChart = ({ onChange }) => {
   const [expenseData, setExpenseData] = useState([]);
   const [categoryColorMap, setCategoryColorMap] = useState({});
 
   const fetchExpense = async () => {
     const res = await fetch("http://localhost:4000/api/expense", {
       
-      credentials:'include',
+      credentials:'include'
     });
     const result = await res.json();
     const rawData = Array.isArray(result) ? result : result.data || [];
@@ -56,7 +56,7 @@ const ExpensePieChart = ({ trigger }) => {
 
   useEffect(() => {
     fetchExpense();
-  }, [trigger]);
+  }, [onChange]);
 
   return (
     <div className="w-full h-[400px] flex flex-col">

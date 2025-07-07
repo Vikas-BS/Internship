@@ -50,7 +50,7 @@ const DashboardCards = () => {
             </div>
 
             <div className="w-full sm:w-[90%] md:w-[70%] lg:w-[48%] xl:w-[45%] bg-white shadow-inner border border-gray-100 rounded-xl p-3">
-              <ExpPi trigger={expenseTrigger} />
+              <ExpPi onChange={expenseTrigger} />
             </div>
           </div>
         </div>
