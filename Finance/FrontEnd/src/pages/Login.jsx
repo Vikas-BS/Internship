@@ -30,8 +30,7 @@ const Login = () => {
         toast.error('Login failed');
       }
     } catch (err) {
-      console.error(err);
-      alert('Error during login');
+      toast.error('Error during login');
     }
   };
 
@@ -61,8 +60,7 @@ const Login = () => {
         toast.error( 'Google login failed');
       }
     } catch (err) {
-      console.error(err);
-      alert('Error during Google login');
+      toast.error('Error during Google login');
     }
   };
 
@@ -74,7 +72,8 @@ const Login = () => {
           <GoogleLogin
             onSuccess={handleGoogleSuccess}
             onError={() => console.log('Google login failed')}
-          
+            useOneTap={false}
+            auto_select={false}
           />
         </div>
 

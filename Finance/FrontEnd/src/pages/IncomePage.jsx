@@ -70,24 +70,24 @@ const Income = () => {
   };
 
   return (
-    <div className="min-h-screen w-screen bg-white py-10 px-4 sm:px-10">
+    <div className="min-h-screen w-screen bg-white dark:bg-slate-800 py-10 px-4 sm:px-10">
       <div className="max-w-4xl mx-auto">
       
         <button
           onClick={() => navigate(-1)}
-          className="flex items-center gap-2 bg-white text-gray-700 hover:text-black mb-6"
+          className="flex items-center gap-2 bg-white text-gray-700 dark:bg-slate-700 dark:text-gray-200 hover:text-black mb-6"
         >
           <ArrowLeft size={20} /> Back
         </button>
 
-        <h1 className="text-2xl font-bold text-green-700 mb-6">Income History</h1>
+        <h1 className="text-2xl font-bold text-green-700 dark:text-gray-200 mb-6">Income History</h1>
 
 
         <div className="flex flex-col sm:flex-row gap-4 mb-6">
           <select
             value={selectedCategory}
             onChange={(e) => setSelectedCategory(e.target.value)}
-            className="p-2 border rounded-lg w-full sm:w-48 bg-white text-black"
+            className="p-2 border dark:border-none rounded-lg w-full sm:w-48 bg-white dark:bg-slate-600 text-black dark:text-gray-200"
           >
             <option value="">All Categories</option>
             {categories.map((cat, idx) => (
@@ -98,7 +98,7 @@ const Income = () => {
           </select>         
             <button
               onClick={clearFilters}
-              className="bg-gray-100 hover:bg-gray-200 px-4 py-2 rounded-lg text-sm text-gray-700"
+              className="bg-gray-100 dark:bg-slate-600 hover:bg-gray-200 px-4 py-2 rounded-lg text-sm text-gray-700 dark:text-gray-200"
             >
               Clear Filters
             </button>
@@ -112,14 +112,14 @@ const Income = () => {
             {currentItems.map((item, index) => (
               <div
                 key={index}
-                className="bg-white p-4 rounded-xl shadow border border-gray-200 hover:shadow-md transition"
+                className="bg-white dark:bg-slate-700 p-4 rounded-xl shadow dark:border-none border border-gray-200 hover:shadow-md transition"
               >
                 <div className="flex justify-between items-center mb-2">
                   <div className="flex items-center gap-2">
                     <span className="text-xl">
                       {categoryIcons[item.category] || "💵"}
                     </span>
-                    <h2 className="text-lg font-semibold text-gray-800">
+                    <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-200">
                       {item.title}
                     </h2>
                   </div>

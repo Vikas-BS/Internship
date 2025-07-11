@@ -1,5 +1,4 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { useState } from 'react';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Home from './pages/Home';
@@ -18,12 +17,9 @@ function App() {
   return (
     <GoogleOAuthProvider clientId="149634613993-g967k1d67f27sf2th9dl685k527ar9k2.apps.googleusercontent.com">
       <UserProvider>
-      <Router>
-        
-        <ToastContainer position="top-right" autoClose={2000} reverseOrder={false}  />
-        
-        <Navbar />
-        
+      <Router>       
+        <ToastContainer position="top-right" autoClose={2000} reverseOrder={false}  />       
+        <Navbar />     
         <Routes>
           
           <Route path="/" element={<Login  />} />

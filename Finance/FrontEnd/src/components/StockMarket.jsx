@@ -1,87 +1,89 @@
 import React, { useEffect, useState } from "react";
 import { Trash2 } from "lucide-react";
+import { toast } from "react-toastify";
 
-const FINNHUB_API_KEY = "d1n4b09r01qlvnp5f8h0d1n4b09r01qlvnp5f8hg"; // Replace with .env for production
+const FINNHUB_API_KEY = "d1nmb29r01qovv8k5j50d1nmb29r01qovv8k5j5g";
 
-const StockDashboard = () => {
-  const [symbols, setSymbols] = useState([]);
+const StockMarket = () => {
   const [input, setInput] = useState("");
   const [stockData, setStockData] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  // Fetch stocks from backend on mount
-  useEffect(() => {
-    const fetchSymbols = async () => {
-      try {
-        const res = await fetch("http://localhost:4000/api/stock", {
-          credentials: "include",
-        });
-        const data = await res.json();
-        setSymbols(data || []);
-      } catch (err) {
-        console.error("Failed to fetch symbols:", err);
-      }
-    };
-    fetchSymbols();
-  }, []);
-
-  // Fetch stock prices from Finnhub
-  const fetchStock = async (symbol) => {
+  const fetchStocksFromBackend = async () => {
     try {
+      const res = await fetch("http://localhost:4000/api/stock", {
+        credentials: "include",
+      });
+      const data = await res.json();
+
+      if (data?.stocks?.length > 0) {
+        const symbols = data.stocks;
+
+        const prices = await Promise.all(
+          symbols.map(async (symbol) => {
+            const res = await fetch(
+              `https://finnhub.io/api/v1/quote?symbol=${symbol}&token=${FINNHUB_API_KEY}`
+            );
+            const data = await res.json();
+            return {
+              symbol,
+              price: data.c,
+              change: (data.c - data.pc).toFixed(2),
+              percent: (((data.c - data.pc) / data.pc) * 100).toFixed(2),
+            };
+          })
+        );
+
+        setStockData(prices);
+      } else {
+        setStockData([]);
+      }
+    } catch (err) {
+      toast.error("Error fetching stocks:", err);
+    }
+  };
+
+  const addStock = async () => {
+    if (!input.trim()) return;
+    const symbol = input.toUpperCase();
+
+    try {
+      setLoading(true);
+
       const res = await fetch(
         `https://finnhub.io/api/v1/quote?symbol=${symbol}&token=${FINNHUB_API_KEY}`
       );
       const data = await res.json();
-      if (!data || data.c === 0) return null;
 
-      return {
-        symbol,
-        price: data.c,
-        change: data.d,
-        percent: data.dp,
-        prevClose: data.pc,
-      };
-    } catch (err) {
-      console.error("Error fetching quote for", symbol, err);
-      return null;
-    }
-  };
+      if (!data.c || data.c === 0) {
+        toast.error("Invalid or inactive stock symbol");
+        return;
+      }
 
-  const fetchAllStockData = async () => {
-    setLoading(true);
-    const results = await Promise.all(symbols.map(fetchStock));
-    setStockData(results.filter(Boolean));
-    setLoading(false);
-  };
-
-  useEffect(() => {
-    if (symbols.length > 0) fetchAllStockData();
-  }, [symbols]);
-
-  // Add new stock symbol
-  const handleAdd = async () => {
-    const cleanSymbol = input.trim().toUpperCase();
-    if (!cleanSymbol || symbols.includes(cleanSymbol)) return;
-
-    try {
-      const res = await fetch("http://localhost:4000/api/stock", {
+      const saveRes = await fetch("http://localhost:4000/api/stock", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
         credentials: "include",
-        body: JSON.stringify({ symbol: cleanSymbol }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ stocks: [symbol] }),
       });
 
-      if (res.ok) {
-        setSymbols((prev) => [...prev, cleanSymbol]);
+      if (saveRes.ok) {
         setInput("");
+        await fetchStocksFromBackend();
+      } else {
+        const err = await saveRes.json();
+        toast.error(err.message);
       }
     } catch (err) {
-      console.error("Add stock failed:", err);
+      toast.error("Error adding stock:", err);
+    } finally {
+      setLoading(false);
     }
   };
 
-  // Remove a stock
-  const handleRemove = async (symbol) => {
+  const deleteStock = async (symbol) => {
     try {
       const res = await fetch(`http://localhost:4000/api/stock/${symbol}`, {
         method: "DELETE",
@@ -89,12 +91,19 @@ const StockDashboard = () => {
       });
 
       if (res.ok) {
-        setSymbols((prev) => prev.filter((s) => s !== symbol));
+        const updatedStocks = await res.json();
+        setStockData((prev) =>
+          prev.filter((stock) => updatedStocks.includes(stock.symbol))
+        );
       }
     } catch (err) {
-      console.error("Remove stock failed:", err);
+      toast.error("Error deleting stock:", err);
     }
   };
+
+  useEffect(() => {
+    fetchStocksFromBackend();
+  }, []);
 
   return (
     <div className="w-full max-w-full overflow-x-hidden">
@@ -104,10 +113,10 @@ const StockDashboard = () => {
           value={input}
           onChange={(e) => setInput(e.target.value)}
           placeholder="Enter stock symbol"
-          className="w-full sm:max-w-xs px-4 py-2 bg-white text-black border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="w-full sm:max-w-xs px-4 py-2 bg-white dark:bg-slate-600 text-black dark:text-gray-200 border border-gray-300 dark:border-none rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
         <button
-          onClick={handleAdd}
+          onClick={addStock}
           className="w-full sm:w-auto px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
         >
           Add
@@ -124,28 +133,29 @@ const StockDashboard = () => {
           stockData.map((stock) => (
             <div
               key={stock.symbol}
-              className="relative w-full bg-white border border-gray-200 rounded-xl p-5 shadow-md text-center overflow-hidden"
+              className="relative w-full bg-white dark:bg-slate-700 border border-gray-200 dark:border-none rounded-xl p-5 shadow-md text-center overflow-hidden"
             >
               <button
-                onClick={() => handleRemove(stock.symbol)}
+                onClick={() => deleteStock(stock.symbol)}
                 title="Remove"
                 className="absolute top-2 right-2 text-gray-400 hover:text-red-600 focus:outline-none focus:ring-2 focus:ring-red-300 transition-all duration-200 p-1 rounded-full"
               >
                 <Trash2 size={18} strokeWidth={2} />
               </button>
 
-              <h2 className="text-xl font-bold text-gray-800">
+              <h2 className="text-xl font-bold text-gray-800 dark:text-gray-200">
                 {stock.symbol}
               </h2>
               <p className="text-3xl font-extrabold text-blue-600 mt-2">
-                ₹ {stock.price.toFixed(2)}
+                $ {stock.price.toFixed(2)}
               </p>
               <p
                 className={`mt-1 text-sm ${
-                  stock.change >= 0 ? "text-green-600" : "text-red-600"
+                  stock.change >= 0 ? "text-green-600" : "text-red-600 dark:text-red-400"
                 }`}
               >
-                {stock.change >= 0 ? "▲" : "▼"} {stock.change} ({stock.percent}%)
+                {stock.change >= 0 ? "▲" : "▼"} {stock.change} ({stock.percent}
+                %)
               </p>
             </div>
           ))
@@ -155,4 +165,4 @@ const StockDashboard = () => {
   );
 };
 
-export default StockDashboard;
+export default StockMarket;
